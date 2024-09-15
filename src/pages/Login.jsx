@@ -13,7 +13,7 @@ import { FcGoogle } from "react-icons/fc";
 import auth from "../firebase/firebase.config";
 
 const LogIn = () => {
-  const { aUser } = useAuthState(auth);
+  const [aUser] = useAuthState(auth);
   const [signInWithEmailAndPassword, user] =
     useSignInWithEmailAndPassword(auth);
   const navigate = useNavigate();
@@ -22,30 +22,35 @@ const LogIn = () => {
 
   useEffect(() => {
     if (user || gUser || aUser) {
-      return navigate("/dashboard");
+      navigate("/dashboard");
     }
   }, [user, gUser, aUser, navigate]);
 
-  const handleGoogleLogin = () => {
-    signInWithGoogle();
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle(); // Changed/Modified: Added try-catch for error handling.
+      toast.success("Logged in with Google successfully"); // Changed/Modified: Added success toast for Google login.
+    } catch (err) {
+      toast.error("Google login failed"); // Changed/Modified: Added error toast for failed Google login.
+    }
   };
 
   const handleLogIn = async (e) => {
     e.preventDefault();
-
-    const email = e?.target?.email?.value;
-    const password = e?.target?.password?.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
     if (email && password) {
-      await signInWithEmailAndPassword(email, password);
-      toast.success("Logged in successfully");
-    }
-
-    if (user) {
-      // toast.success("Logged in successfully");
-      navigate("/dashboard");
+      try {
+        await signInWithEmailAndPassword(email, password); // Changed/Modified: Added try-catch for error handling.
+        toast.success("Logged in successfully"); // Changed/Modified: Added success toast for email/password login.
+        navigate("/dashboard"); // Changed/Modified: Moved navigation after login success.
+      } catch (err) {
+        toast.error("Login failed"); // Changed/Modified: Added error toast for failed login.
+      }
     }
   };
+
   return (
     <div className="min-h-screen m-5 md:m-10">
       <form
