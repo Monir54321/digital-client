@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import QRCode from "qrcode";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ServerCopyQr = ({ nationalId, dateOfBirth, name }) => {
   const [qrImage, setQrImage] = useState("");

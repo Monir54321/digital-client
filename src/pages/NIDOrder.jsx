@@ -5,12 +5,14 @@ import Loading from "../components/Loading";
 import MyOrdersUi from "../components/MyOrdersUi/MyOrdersUi";
 import config from "../config/global";
 import auth from "../firebase/firebase.config";
+import useManageOrderData from "../utils/getManageOrder";
 
 const NIDOrder = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [myOrders, setMyOrders] = useState(null);
   const [reFetch, setReFetch] = useState(false);
-
+  const { data } = useManageOrderData();
+  const statusData = data?.find((item) => item.title === "এনআইডি কার্ড");
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
@@ -132,8 +134,17 @@ const NIDOrder = () => {
           />
         </label>
 
-        <button className="btn w-full  mt-4 btn-primary text-white">
-          Submit
+        <button
+          className="btn w-full  mt-4 btn-primary text-white"
+          disabled={loading || statusData?.status === "inactive"}
+        >
+          {loading ? (
+            <>
+              <span className="loading loading-spinner text-white bg-primary"></span>
+            </>
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
 

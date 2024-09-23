@@ -164,9 +164,11 @@ const SignUp = () => {
           </Link>
         </p>
 
-        <button type="submit" className="btn btn-primary text-white">
-          Register
-        </button>
+        <div className="w-full">
+          <button type="submit" className="btn w-full bg-blue-600 text-white btn-primary">
+            Register
+          </button>
+        </div>
         <div onClick={() => handleGoogleLogin()} className="btn w-full">
           <div className="flex items-center gap-2">
             <FcGoogle size={24} />

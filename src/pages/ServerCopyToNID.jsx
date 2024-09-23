@@ -87,6 +87,8 @@ const ServerCopyToNID = () => {
         }
       );
       const data = await response.json();
+
+      console.log("data received", data);
       setInfo((preState) => ({
         ...preState,
         signatureImg: signatureImg,
@@ -102,13 +104,15 @@ const ServerCopyToNID = () => {
         bloodGroup: data?.bloodGroup,
         location: `${
           data?.presentHomeOrHoldingNo
-            ? `বাসা/হোল্ডিং:${data?.presentHomeOrHoldingNo}`
+            ? `বাসা/হোল্ডিং: ${data?.presentHomeOrHoldingNo},`
             : ""
-        }, গ্রাম/রাস্তা: ${data?.presentAdditionalVillageOrRoad},${
-          data?.presentMouzaOrMoholla && `${data?.presentMouzaOrMoholla}, `
-        } ডাকঘর: ${data?.presentPostOffice} - ${checkAndConvertPostalCode(
-          data?.presentPostalCode
-        )}, ${data?.presentUpozila},${
+        } গ্রাম/রাস্তা: ${data?.presentAdditionalVillageOrRoad}, ${
+          data?.presentMouzaOrMoholla ? `${data?.presentMouzaOrMoholla}, ` : ""
+        } ডাকঘর: ${
+          data?.presentPostOffice ? `${data?.presentPostOffice} -` : ""
+        }  ${checkAndConvertPostalCode(data?.presentPostalCode)}, ${
+          data?.presentUpozila
+        },${
           data?.presentCityCorporationOrMunicipality
             ? `${data?.presentCityCorporationOrMunicipality + ","}`
             : ""

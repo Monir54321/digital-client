@@ -56,6 +56,19 @@ const ServerCopy = () => {
         }
       );
       const data = await response.json();
+
+      if (
+        data?.message === "সার্ভারে খুঁজে পাওয়া যায়নি" ||
+        !data?.nationalId
+      ) {
+        setLoading(false);
+        return toast.error(data?.message || "সার্ভারে খুঁজে পাওয়া যায়নি");
+      }
+
+      if (data?.nationalId) {
+        setNidData(data);
+      }
+
       const result = await fetch(
         `${config.back_end_url}/api/nid2?nid=${nidNumber}&dob=${dateOfBirth}`,
         {
@@ -65,12 +78,14 @@ const ServerCopy = () => {
           },
         }
       );
+
       const nidAddressData = await result.json();
-      setNidData(data);
+
       setNidAddressData(nidAddressData);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

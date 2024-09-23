@@ -128,6 +128,12 @@ const DashboardLayout = () => {
                 এনআইডি কার্ড
               </Link>
             </li>
+            <li className="mt-2 text-[15px] font-sans text-gray-500">
+              <Link to={"/dashboard/servercopy"} onClick={handleLinkClick}>
+                <FaRegAddressCard width={16} height={16} />
+                সার্ভার কপি
+              </Link>
+            </li>
             <li className="mt-2 w-full text-[15px] font-sans text-gray-500">
               <Link
                 to={"/dashboard/servercopytonidmake"}
@@ -149,12 +155,7 @@ const DashboardLayout = () => {
                 লোকেশন ট্র্যাক
               </Link>
             </li>
-            <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link to={"/dashboard/servercopy"} onClick={handleLinkClick}>
-                <FaRegAddressCard width={16} height={16} />
-                সার্ভার কপি
-              </Link>
-            </li>
+
             {/* <li className="mt-2 text-[15px] font-sans text-gray-500">
               <Link to={"/dashboard/servercopy"} onClick={handleLinkClick}>
                 <FaRegAddressCard width={16} height={16} />
@@ -228,7 +229,10 @@ const DashboardLayout = () => {
               </Link>
             </li>
             <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <a href={"https://wa.me/+880187654321"} target="_blank">
+              <a
+                href="https://chat.whatsapp.com/L7aVoQFgKXxAeSBbTj0ful"
+                target="_blank"
+              >
                 <FaWhatsapp width={16} height={16} />
                 WhatsApp
               </a>

@@ -13,6 +13,8 @@ import "./ServerCopyResult.css";
 const ServerCopyResult = ({ nidData }) => {
   const nidInformation = nidData || {};
 
+  console.log("nidInformation", nidInformation);
+
   const {
     nameBangla: name, // Renaming nameBangla to name
     nameEnglish: nameEn, // Renaming nameEnglish to nameEn
@@ -26,8 +28,8 @@ const ServerCopyResult = ({ nidData }) => {
     pin,
     nationalId,
     religion,
-    voterNumber: voter_no, // Renaming voterNumber to voter_no
-    voterSlNo: sl_no, // Renaming voterSlNo to sl_no
+    voter_no, // Renaming voterNumber to voter_no
+     sl_no, // Renaming voterSlNo to sl_no
     voterAreaCode,
     photo,
     permanentDivision: division, // Renaming permanentDivision to division
@@ -50,16 +52,33 @@ const ServerCopyResult = ({ nidData }) => {
     presentAdditionalVillageOrRoad: presentAdditionalVillageOrRoad,
     presentHomeOrHoldingNo: presentHomeOrHoldingNo,
     presentRegion: presentRegion,
+    presentVillageOrRoad,
+    presentMouzaOrMoholla,
     presentWardForUnionPorishod,
+    permanentVillageOrRoad,
+    permanentMouzaOrMoholla
   } = nidInformation;
 
   // Now you can create the fullAddress fields if needed
 
+//   const permanentFullAddress = `${
+//     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
+//   } 
+// ${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
+// ${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
+// ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
+// ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
+// ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
+// ${upozila ? `উপজেলা: ${upozila},` : ""} 
+// ${district ? `জেলা: ${district},` : ""} 
+// ${division ? `বিভাগ: ${division}` : ""}`;
+
+
   const permanentFullAddress = `${
     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
   } 
-${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
-${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
+${permanentVillageOrRoad ? `গ্রাম/রাস্তা: ${permanentVillageOrRoad},` : ""} 
+${permanentMouzaOrMoholla ? `মৌজা/মহল্লা: ${permanentMouzaOrMoholla},` : ""} 
 ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
 ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
 ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
@@ -67,17 +86,20 @@ ${upozila ? `উপজেলা: ${upozila},` : ""}
 ${district ? `জেলা: ${district},` : ""} 
 ${division ? `বিভাগ: ${division}` : ""}`;
 
+
+
+
   const presentFullAddress = `${
     presentHomeOrHoldingNo ? `বাসা/হোল্ডিং: ${presentHomeOrHoldingNo},` : ""
   } 
 ${
-  presentAdditionalVillageOrRoad
-    ? `গ্রাম/রাস্তা: ${presentAdditionalVillageOrRoad},`
+  presentVillageOrRoad
+    ? `গ্রাম/রাস্তা: ${presentVillageOrRoad},`
     : ""
 } 
 ${
-  presentAdditionalMouzaOrMoholla
-    ? `মৌজা/মহল্লা: ${presentAdditionalMouzaOrMoholla},`
+  presentMouzaOrMoholla
+    ? `মৌজা/মহল্লা: ${presentMouzaOrMoholla},`
     : ""
 } 
 ${
@@ -401,7 +423,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {presentDivision}
+          {presentDistrict}
         </div>
         <div
           style={{
@@ -687,7 +709,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {religion}
+          {religion || "Islam"}
         </div>
 
         <div
@@ -794,8 +816,9 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
         <div
           style={{
             position: "absolute",
-            left: "21%",
-            top: "40%",
+            // left: "21%",
+            left: "20.2%",
+            top: "38.5%",
             width: "auto",
             fontSize: "12px",
             color: "rgb(3, 3, 3)",
@@ -825,7 +848,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             textAlign: "center",
           }}
         >
-          <b>{name}</b>
+          <b>{nameEn}</b>
         </div>
       </div>
     </div>
