@@ -28,8 +28,8 @@ const ServerCopyResult = ({ nidData }) => {
     pin,
     nationalId,
     religion,
-    voter_no, // Renaming voterNumber to voter_no
-     sl_no, // Renaming voterSlNo to sl_no
+    voterNumber: voter_no, // Renaming voterNumber to voter_no
+    voterSlNo: sl_no, // Renaming voterSlNo to sl_no
     voterAreaCode,
     photo,
     permanentDivision: division, // Renaming permanentDivision to division
@@ -56,29 +56,16 @@ const ServerCopyResult = ({ nidData }) => {
     presentMouzaOrMoholla,
     presentWardForUnionPorishod,
     permanentVillageOrRoad,
-    permanentMouzaOrMoholla
+    permanentMouzaOrMoholla,
   } = nidInformation;
 
   // Now you can create the fullAddress fields if needed
 
-//   const permanentFullAddress = `${
-//     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
-//   } 
-// ${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
-// ${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
-// ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
-// ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
-// ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
-// ${upozila ? `উপজেলা: ${upozila},` : ""} 
-// ${district ? `জেলা: ${district},` : ""} 
-// ${division ? `বিভাগ: ${division}` : ""}`;
-
-
   const permanentFullAddress = `${
     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
   } 
-${permanentVillageOrRoad ? `গ্রাম/রাস্তা: ${permanentVillageOrRoad},` : ""} 
-${permanentMouzaOrMoholla ? `মৌজা/মহল্লা: ${permanentMouzaOrMoholla},` : ""} 
+${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
+${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
 ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
 ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
 ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
@@ -86,20 +73,29 @@ ${upozila ? `উপজেলা: ${upozila},` : ""}
 ${district ? `জেলা: ${district},` : ""} 
 ${division ? `বিভাগ: ${division}` : ""}`;
 
-
-
+  //   const permanentFullAddress = `${
+  //     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
+  //   }
+  // ${permanentVillageOrRoad ? `গ্রাম/রাস্তা: ${permanentVillageOrRoad},` : ""}
+  // ${permanentMouzaOrMoholla ? `মৌজা/মহল্লা: ${permanentMouzaOrMoholla},` : ""}
+  // ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""}
+  // ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""}
+  // ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""}
+  // ${upozila ? `উপজেলা: ${upozila},` : ""}
+  // ${district ? `জেলা: ${district},` : ""}
+  // ${division ? `বিভাগ: ${division}` : ""}`;
 
   const presentFullAddress = `${
     presentHomeOrHoldingNo ? `বাসা/হোল্ডিং: ${presentHomeOrHoldingNo},` : ""
   } 
 ${
-  presentVillageOrRoad
-    ? `গ্রাম/রাস্তা: ${presentVillageOrRoad},`
+  presentAdditionalVillageOrRoad
+    ? `গ্রাম/রাস্তা: ${presentAdditionalVillageOrRoad},`
     : ""
 } 
 ${
-  presentMouzaOrMoholla
-    ? `মৌজা/মহল্লা: ${presentMouzaOrMoholla},`
+  presentAdditionalMouzaOrMoholla
+    ? `মৌজা/মহল্লা: ${presentAdditionalMouzaOrMoholla},`
     : ""
 } 
 ${
