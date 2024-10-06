@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { format } from 'date-fns';
-import React from "react";
 import { MdDownload } from "react-icons/md";
 import config from "../../config/global";
 

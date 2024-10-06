@@ -10,10 +10,8 @@ import config from "../config/global";
 import auth from "../firebase/firebase.config";
 import "./ServerCopyResult.css";
 
-const ServerCopyResult = ({ nidData }) => {
+const ServerCopyResult = ({ nidData, isChannelTwo = "0" }) => {
   const nidInformation = nidData || {};
-
-  console.log("nidInformation", nidInformation);
 
   const {
     nameBangla: name, // Renaming nameBangla to name
@@ -57,6 +55,8 @@ const ServerCopyResult = ({ nidData }) => {
     presentWardForUnionPorishod,
     permanentVillageOrRoad,
     permanentMouzaOrMoholla,
+    nidFather,
+    nidMother
   } = nidInformation;
 
   // Now you can create the fullAddress fields if needed
@@ -160,6 +160,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
                 body: JSON.stringify({
                   title: "সার্ভার কপি",
                   email: user?.email,
+                  isChannelTwo: isChannelTwo,
                 }),
               }
             );
@@ -174,7 +175,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
     };
 
     checkAndSubmitData(); // Call the function within the useEffect
-  }, [price, nidData, user?.email]); // Add relevant dependencies
+  }, [price, nidData, user?.email, isChannelTwo]); // Add relevant dependencies
 
   useEffect(() => {
     if (nidData && qrImage && nationalId) {
@@ -360,7 +361,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          ভোটার নম্বর
+          {voter_no ? "ভোটার নম্বর" :"পিতার এনআইডি"}
         </div>
         <div
           id="nid_mother"
@@ -372,7 +373,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {voter_no}
+          {voter_no || nidFather}
         </div>
         <div
           style={{
@@ -383,7 +384,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          সিরিয়াল নম্বর
+          {sl_no? "সিরিয়াল নম্বর" :"মাতার এনআইডি"}
         </div>
         <div
           id="spouse"
@@ -395,7 +396,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {sl_no}
+          {sl_no || nidMother}
         </div>
         <div
           style={{

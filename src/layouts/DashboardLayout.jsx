@@ -97,7 +97,6 @@ const DashboardLayout = () => {
                 </Link>
               </li>
             )}
-
             {userData?.role === "master" && (
               <li className="mt-2 text-[15px] font-sans text-gray-500">
                 <Link
@@ -109,7 +108,6 @@ const DashboardLayout = () => {
                 </Link>
               </li>
             )}
-
             <li className="mt-2 text-[15px] font-sans text-gray-500">
               <Link to={"/dashboard/nidMake"} onClick={handleLinkClick}>
                 <FaAddressCard width={16} height={16} />
@@ -134,6 +132,13 @@ const DashboardLayout = () => {
                 সার্ভার কপি
               </Link>
             </li>
+            <li className="mt-2 text-[15px] font-sans text-gray-500">
+              <Link to={"/dashboard/servercopy-channel-two"} onClick={handleLinkClick}>
+                <FaRegAddressCard width={16} height={16} />
+                সার্ভার কপি channel 2
+              </Link>
+            </li>
+            
             <li className="mt-2 w-full text-[15px] font-sans text-gray-500">
               <Link
                 to={"/dashboard/servercopytonidmake"}
@@ -155,13 +160,6 @@ const DashboardLayout = () => {
                 লোকেশন ট্র্যাক
               </Link>
             </li>
-
-            {/* <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link to={"/dashboard/servercopy"} onClick={handleLinkClick}>
-                <FaRegAddressCard width={16} height={16} />
-                সার্ভার কপি channel 2
-              </Link>
-            </li> */}
             <li className="mt-2 text-[15px] font-sans text-gray-500">
               <Link to={"/dashboard/calllistsim"} onClick={handleLinkClick}>
                 <FaPhoneAlt width={16} height={16} />

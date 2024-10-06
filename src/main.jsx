@@ -29,6 +29,7 @@ import PriceList from "./pages/PriceList.jsx";
 import Recharge from "./pages/Recharge.jsx";
 import SaftyTika from "./pages/SaftyTika.jsx";
 import ServerCopy from "./pages/ServerCopy.jsx";
+import ServerCopyChannelTwo from "./pages/ServerCopyChannelTwo.jsx";
 import ServerCopyResult from "./pages/ServerCopyResult.jsx";
 import ServerCopyToNID from "./pages/ServerCopyToNID.jsx";
 import SignCopy from "./pages/SignCopy.jsx";
@@ -158,6 +159,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ServerCopy />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/servercopy-channel-two",
+        element: (
+          <PrivateRoute>
+            <ServerCopyChannelTwo />
           </PrivateRoute>
         ),
       },

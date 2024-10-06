@@ -19,13 +19,14 @@ const OrderServices = ({ prop }) => {
     "বিকাশ ইনফো": originalPriceList?.bikashInfo,
     "বিকাশ পিন রিসেট": originalPriceList?.bikashPinReset,
     বায়োমেট্রিক: originalPriceList?.biometricOrder,
-    "নাম ঠিকনা (হারানো আইডি)": originalPriceList?.birthCertificateFix,
+    // "নাম ঠিকনা (হারানো আইডি)": originalPriceList?.birthCertificateFix,
     "এনআইডি কার্ড অর্ডার": originalPriceList?.nidOrder,
     "নগদ ইনফো": originalPriceList?.nogodInfoOrder,
     "আইডি কার্ড": originalPriceList?.nidMake,
     "সুরক্ষা টিকা": originalPriceList?.saftyTika,
     "সার্ভার কপি": originalPriceList?.serverCopy,
     "সাইন কপি": originalPriceList?.signCopy,
+    "নাম ঠিকনা (হারানো আইডি)": originalPriceList?.nameAddressesLostId
   };
 
   //find price list
@@ -292,6 +293,22 @@ const OrderServices = ({ prop }) => {
       formData.append("file", file);
       formData.append("status", "Success"); // Add status to formData as well
       fetch(`${config.back_end_url}/orderNIds/${id}`, {
+        method: "PATCH",
+        body: formData, // Directly send the formData object
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status == "Success") {
+            setRefetch(true);
+            toast.success("Successfully uploaded the order");
+            console.log(data);
+          }
+        });
+    }else if (title == "নাম ঠিকনা (হারানো আইডি)") {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("status", "Success"); // Add status to formData as well
+      fetch(`${config.back_end_url}/nameAddressesLostId/${id}`, {
         method: "PATCH",
         body: formData, // Directly send the formData object
       })

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
+import MyOrdersUi from "../components/MyOrdersUi/MyOrdersUi";
+import config from "../config/global";
 import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
 
@@ -10,77 +12,98 @@ const NameAddressLostId = () => {
   const statusData = data?.find(
     (item) => item.title === "নাম ঠিকনা (হারানো আইডি)"
   );
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+  const [reFetch, setReFetch] = useState(false);
   const [myOrders, setMyOrders] = useState(null);
 
-  // useEffect(() => {
-  //     fetch(`http://localhost:5000/nameaddresslostid/user/${user?.email}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //         setMyOrders(data?.data)
-  //         console.log(data);
-  //     })
-  // },[user])
+
+  const [price, setPrice] = useState(0);
+
+  useEffect(() => {
+    fetch(`${config.back_end_url}/priceList/668f76383906559fe7ff631c`)
+      .then((response) => response.json())
+      .then((pData) => {
+        setPrice(parseFloat(pData?.data?.nameAddressesLostId));
+      });
+  }, []);
+
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`${config.back_end_url}/nameAddressesLostId/user/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "Success") {
+            setReFetch(false);
+            setMyOrders(data?.data);
+            console.log(data);
+          } else {
+            toast.error("Failed to fetch orders");
+          }
+        })
+        .catch((error) => {
+          toast.error("Error fetching orders");
+          console.error("Error fetching orders:", error);
+        });
+    }
+  }, [user, reFetch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const title = "";
-    const name = e?.target?.name?.value;
-    const fatherName = e?.target?.fatherName?.value;
-    const motherName = e?.target?.motherName?.value;
-    const husbandWifeName = e?.target?.husbandWifeName?.value;
-    const birthCertificate = e?.target?.birthCertificate?.value;
-    const bivag = e?.target?.bivag?.value;
-    const jela = e?.target?.jela?.value;
-    const upazila = e?.target?.upazila?.value;
-    const unionPowrosovaSityCorporation =
-      e?.target?.unionPowrosovaSityCorporation?.value;
-    const wordernumber = e?.target?.ordernumber?.value;
-    const dakghar = e?.target?.dakghar?.value;
-    const gram = e?.target?.gram?.value;
-    const fatherNIDNumber = e?.target?.fatherNIDNumber?.value;
-    const motherNIDNumber = e?.target?.motherNIDNumber?.value;
-    const voterNID = e?.target?.voterNID?.value;
+    const name = e.target.message.value;
 
-    const data = {
-      title,
+    const nameAddressesLostIdData = {
+      title: "নাম ঠিকনা (হারানো আইডি)",
       name,
-      fatherName,
-      motherName,
-      husbandWifeName,
-      birthCertificate,
-      bivag,
-      jela,
-      upazila,
-      unionPowrosovaSityCorporation,
-      wordernumber,
-      dakghar,
-      gram,
-      fatherNIDNumber,
-      motherNIDNumber,
-      voterNID,
       email: user.email,
     };
 
-    console.log(data);
-
-    // post data to database
-    fetch("http://localhost:5000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    fetch(`${config.back_end_url}/priceList/668f76383906559fe7ff631c`)
       .then((res) => res.json())
-      .then((data) => {
-        if (data.status == "Success") {
-          toast.success(data.message);
-          console.log(data);
+      .then((pData) => {
+        const price = pData?.data?.nameAddressesLostId;
+        if (price) {
+          fetch(`${config.back_end_url}/users/${user?.email}`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data?.data?.amount >= price) {
+                // Post data to database
+                fetch(`${config.back_end_url}/nameAddressesLostId`, {
+                  method: "POST",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(nameAddressesLostIdData),
+                })
+                  .then((res) => res.json())
+                  .then((rData) => {
+                    if (rData.status === "Success") {
+                      setReFetch(true);
+                      toast.success(rData.message);
+                      e.target.reset(); // Reset the form
+                    } else {
+                      toast.error(rData.message);
+                    }
+                  })
+                  .catch((error) => {
+                    toast.error("Failed to submit order.");
+                    console.error("Error submitting order:", error);
+                  });
+              } else {
+                toast.error("Please recharge to proceed with this order.");
+              }
+            })
+            .catch((error) => {
+              toast.error("Error fetching user data");
+              console.error("Error fetching user data:", error);
+            });
         } else {
-          toast.error(data.message);
-          console.log(data);
+          toast.error("Price information not found.");
         }
+      })
+      .catch((error) => {
+        toast.error("Error fetching price data");
+        console.error("Error fetching price data:", error);
       });
   };
 
@@ -95,174 +118,39 @@ const NameAddressLostId = () => {
           আইডি কার্ড এর জন্য অর্ডার করুন
         </h1>
         <h1 className=" md:text-xl text-center mt-5 ">
-          আইডি কার্ড এর জন্য 200 টাকা কাটা হবে ।
+          আইডি কার্ড এর জন্য {price} টাকা কাটা হবে ।
         </h1>
 
         <label className="form-control w-full ">
           <div className="label">
             <span className="label-text">নিজ নাম</span>
           </div>
-          <input
-            type="text"
-            placeholder="নিজ নাম"
-            name="name"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">পিতার নাম</span>
-          </div>
-          <input
-            type="text"
-            placeholder="পিতার নাম"
-            name="fatherName"
-            className="input input-bordered w-full"
-          />
-        </label>
-
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">মাতার নাম</span>
-          </div>
-          <input
-            type="text"
-            placeholder="মাতার নাম"
-            name="motherName"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">স্বামী/স্ত্রী নাম</span>
-          </div>
-          <input
-            type="text"
-            placeholder="স্বামী/স্ত্রী নাম"
-            name="husbandWifeName"
-            className="input input-bordered w-full"
-          />
-        </label>
-
-        <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">জন্ম সনদ যদি থাকে</span>
-          </div>
-          <input
-            type="file"
-            name="birthCertificate"
-            className="file-input file-input-bordered w-full"
-          />
-        </label>
-
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">বিভাগ</span>
-          </div>
-          <input
-            type="text"
-            placeholder="বিভাগ"
-            name="bivag"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">জেলা</span>
-          </div>
-          <input
-            type="text"
-            placeholder="জেলা"
-            name="jela"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">উপজেলা</span>
-          </div>
-          <input
-            type="text"
-            placeholder="উপজেলা"
-            name="upazila"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">ইউনিয়ন/পৌরসভা/সিটি করপোরেশন</span>
-          </div>
-          <input
-            type="text"
-            placeholder="ইউনিয়ন/পৌরসভা/সিটি করপোরেশন"
-            name="unionPowrosovaSityCorporation"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">ওয়ার্ড নং</span>
-          </div>
-          <input
-            type="text"
-            placeholder="ওয়ার্ড নং"
-            name="ordernumber"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">ডাকঘর</span>
-          </div>
-          <input
-            type="text"
-            placeholder="ডাকঘর"
-            name="dakghar"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">গ্রাম</span>
-          </div>
-          <input
-            type="text"
-            placeholder="গ্রাম"
-            name="gram"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">পিতার এনআইডি নং যদি থাকে</span>
-          </div>
-          <input
-            type="text"
-            placeholder="পিতার এনআইডি নং যদি থাকে"
-            name="fatherNIDNumber"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">মাতার এনআইডি নং যদি থাকে</span>
-          </div>
-          <input
-            type="text"
-            placeholder="মাতার এনআইডি নং যদি থাকে"
-            name="motherNIDNumber"
-            className="input input-bordered w-full"
-          />
-        </label>
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text">সাথে ভোটার হওয়া একজনের এনআইডি</span>
-          </div>
-          <input
-            type="file"
-            placeholder="সাথে ভোটার হওয়া একজনের এনআইডি"
-            name="voterNID"
-            className="file-input input-bordered w-full"
+          <textarea
+            className="border border-gray-300 rounded-lg p-4 w-full h-auto resize-none shadow-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+            rows={20}
+            placeholder="enter your information in details"
+            name="message"
+            defaultValue={`
+নাম ঠিকানা লিখে দেন
+নিজ- *নাম: 
+•জন্ম তারিখ:
+*পিতার নাম: 
+*মাতার নাম: 
+•স্বামী/স্ত্রীর নাম:
+•জন্ম নিবন্ধন নং:
+*বিভাগ: 
+*জেলা: 
+*উপজেলা:
+*ইউনিয়ন/সিটি/পৌরসভা: 
+•ওয়ার্ড নং/ভোটার এরিয়া নং: 
+•বাসা/হোল্ডিং:
+*গ্ৰাম/রাস্তা:
+একই এলাকার আইডি: 
+•পিতার আইডি নং: 
+•মাতার আইডি নং: 
+স্টার মার্ক করা তথ্য বাধ্যতামূলক
+অথবা এডমিন সঙ্গে কথা বলেন
+  `}
           />
         </label>
 
@@ -279,6 +167,8 @@ const NameAddressLostId = () => {
           )}
         </button>
       </form>
+
+      {myOrders && <MyOrdersUi myOrders={myOrders} />}
     </div>
   );
 };

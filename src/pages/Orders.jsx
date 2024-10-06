@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import OrderServices from "../components/orders/OrderServices";
 
 const Orders = () => {
@@ -28,7 +28,7 @@ const Orders = () => {
           <option name="nogodinfo">নগদ ইনফো</option>
           {/* <option name="bikashpinreset">বিকাশ পিন রিসেট</option> */}
           <option name="signCopy">সাইন কপি</option>
-          {/* <option name="nameaddress">নাম ঠিকনা (হারানো আইডি)</option> */}
+          <option name="nameaddress">নাম ঠিকনা (হারানো আইডি)</option>
         </select>
       </label>
 
@@ -43,7 +43,8 @@ const Orders = () => {
             (status == "বিকাশ ইনফো" && "bikashInfoOrders") ||
             (status == "নগদ ইনফো" && "nogodInfoOrders") ||
             (status == "বিকাশ পিন রিসেট" && "bikashPinResets") ||
-            (status == "সাইন কপি" && "signCopy")
+            (status == "সাইন কপি" && "signCopy") ||
+            (status == "নাম ঠিকনা (হারানো আইডি)" && "nameAddressesLostId")
           }
         />
       ) : (
