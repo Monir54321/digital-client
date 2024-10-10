@@ -115,10 +115,10 @@ const NameAddressLostId = () => {
     <div className="w-full p-10 min-h-screen ">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
         <h1 className="text-1xl md:text-3xl text-center">
-          আইডি কার্ড এর জন্য অর্ডার করুন
+        নাম ঠিকানা অর্ডার করুন
         </h1>
         <h1 className=" md:text-xl text-center mt-5 ">
-          আইডি কার্ড এর জন্য {price} টাকা কাটা হবে ।
+        নাম ঠিকানার জন্য {price} টাকা কাটা হবে
         </h1>
 
         <label className="form-control w-full ">
@@ -149,7 +149,7 @@ const NameAddressLostId = () => {
 •পিতার আইডি নং: 
 •মাতার আইডি নং: 
 স্টার মার্ক করা তথ্য বাধ্যতামূলক
-অথবা এডমিন সঙ্গে কথা বলেন
+অথবা এডমিন সঙ্গে কথা বলেন
   `}
           />
         </label>
