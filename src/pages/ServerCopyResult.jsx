@@ -21,6 +21,7 @@ const ServerCopyResult = ({ nidData, isChannelTwo = "0" }) => {
     gender,
     bloodGroup,
     dateOfBirth,
+    birthPlace,
     fatherName: father, // Renaming fatherName to father
     motherName: mother, // Renaming motherName to mother
     pin,
@@ -420,7 +421,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {presentDistrict}
+          {birthPlace}
         </div>
         <div
           style={{
