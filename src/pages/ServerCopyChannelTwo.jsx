@@ -59,6 +59,8 @@ const ServerCopyChannelTwo = () => {
       );
       const data = await response.json();
 
+      console.log("channelTwo reponse data",data)
+
       if (
         data?.message === "সার্ভারে খুঁজে পাওয়া যায়নি" ||
         !data?.nationalId

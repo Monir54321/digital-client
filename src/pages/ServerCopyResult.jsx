@@ -13,6 +13,7 @@ import "./ServerCopyResult.css";
 const ServerCopyResult = ({ nidData, isChannelTwo = "0" }) => {
   const nidInformation = nidData || {};
 
+
   const {
     nameBangla: name, // Renaming nameBangla to name
     nameEnglish: nameEn, // Renaming nameEnglish to nameEn
@@ -733,7 +734,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {presentFullAddress}
+          {nidData?.presentFullAddress || presentFullAddress}
         </div>
 
         <div
@@ -760,7 +761,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {permanentFullAddress}
+          {nidData?.permanentFullAddress || permanentFullAddress}
         </div>
 
         <div
