@@ -99,6 +99,8 @@ const NIDMake = () => {
         }
       );
 
+      console.log(response?.data);
+
       setResponseData(response.data);
       setPdfUploadLoading(false);
     } catch (error) {
@@ -161,6 +163,7 @@ const NIDMake = () => {
     setInfo((prevState) => ({
       ...prevState,
       ...formData,
+      
     }));
     setIsRedirect(true);
     setIsLoading(false);

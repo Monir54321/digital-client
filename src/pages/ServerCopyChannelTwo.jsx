@@ -6,7 +6,7 @@ import config from "../config/global";
 import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
 import useUserData from "../utils/getUserData";
-import ServerCopyResult from "./ServerCopyResult";
+import ServerCopyChannelTwoResult from "./ServerCopyChannelTwoResult";
 
 const ServerCopyChannelTwo = () => {
   const [user] = useAuthState(auth);
@@ -57,6 +57,7 @@ const ServerCopyChannelTwo = () => {
           },
         }
       );
+      console.log("server copy channel two",response)
       const data = await response.json();
 
       console.log("channelTwo reponse data",data)
@@ -95,7 +96,7 @@ const ServerCopyChannelTwo = () => {
 
   if (!loading && nidData) {
     return (
-      <ServerCopyResult
+      <ServerCopyChannelTwoResult
         nidData={nidData}
         nidAddressData={nidAddressData}
         isChannelTwo="1"

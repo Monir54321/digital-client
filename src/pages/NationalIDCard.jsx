@@ -130,7 +130,8 @@ const NationalIDCard = ({ info, invokeApiTitle }) => {
                           <header className="px-1.5 flex items-start gap-x-2 justify-between relative">
                             <img
                               className="w-[38px] absolute top-1.5 left-[4.5px]"
-                              src="https://i.ibb.co.com/PjZjdBb/map-logo.jpg"
+                              // src="https://i.ibb.co.com/PjZjdBb/map-logo.jpg"
+                              src="https://res.cloudinary.com/dr8smmidd/image/upload/v1737958228/map-logo_cjmtry.jpg"
                               alt="Map Logo"
                             />
                             <div className="w-full h-[60px] flex flex-col justify-center">
@@ -207,7 +208,8 @@ const NationalIDCard = ({ info, invokeApiTitle }) => {
                                   marginLeft: "15px",
                                 }}
                                 className="ml-[20px] w-[125px] h-[116px]"
-                                src="https://i.ibb.co.com/88hYyx0/flower-logo.png"
+                                src="https://res.cloudinary.com/dr8smmidd/image/upload/v1737958406/flower-logo_a8jwdq.png"
+                                // src="https://i.ibb.co.com/88hYyx0/flower-logo.png"
                                 alt=""
                               />
                             </div>
@@ -487,7 +489,11 @@ const NationalIDCard = ({ info, invokeApiTitle }) => {
                                   marginBottom: "1px",
                                 }}
                               >
-                                <img src="https://i.ibb.co.com/ZSkrrKd/duddron.png" alt="" />
+                                <img
+                                  src="https://res.cloudinary.com/dr8smmidd/image/upload/v1737958512/duddron_gnzcpo.png"
+                                  // src="https://i.ibb.co.com/ZSkrrKd/duddron.png"
+                                  alt=""
+                                />
                                 <span
                                   className="hidden absolute inset-0 m-auto bn items-center text-[#fff] z-50"
                                   style={{ fontSize: "10.66px" }}
@@ -506,9 +512,10 @@ const NationalIDCard = ({ info, invokeApiTitle }) => {
                           />
                           <div className="py-1 pl-2 pr-1">
                             <img
-                              className="w-[78px] ml-[18px] -mb-[3px]"
+                              className="w-[78px] ml-[18px] -mb-[3px] scale-125"
                               style={{ marginBottom: "3px" }}
-                              src="https://i.ibb.co.com/M1ZyprG/sign.png"
+                              src="https://res.cloudinary.com/dr8smmidd/image/upload/v1737965497/Untitled-1_copy_w53a6t.png"
+                              // src="https://i.ibb.co.com/M1ZyprG/sign.png"
                               alt="Signature"
                             />
                             <div className="flex justify-between items-center -mt-[5px]">
@@ -542,7 +549,10 @@ const NationalIDCard = ({ info, invokeApiTitle }) => {
                               <img
                                 id="card_qr_code"
                                 className="h-[39px] mt-1"
-                                style={{ width: 'calc(100% - 2px)' ,marginLeft:"2px"}}
+                                style={{
+                                  width: "calc(100% - 2px)",
+                                  marginLeft: "2px",
+                                }}
                                 alt="NID Card Generator"
                                 src={`https://barcode.tec-it.com/barcode.ashx?data=%3Cpin%3E${pinNumber}%3C%2Fpin%3E%3Cname%3c${nameEnglish}%3C%2Fname%3E%3CDOB%3E${dateOfBirth}%3C%2FDOB%3E%3CFP%3E%3C%2FFP%3E%3CF%3ERight+Index%3C%2FF%3E%3CTYPE%3EA%3C%2FTYPE%3E%3CV%3E2.0%3C%2FV%3E%3Cds%3E302c02140de59e4371ec653b01eec9cf97f5ed55a284c5bd%3C%2Fds%3E&code=PDF417
 `}

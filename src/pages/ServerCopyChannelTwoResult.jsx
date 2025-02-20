@@ -6,20 +6,23 @@ import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
+// import craneImag from "../../public/crane.png";
 import bg_server_copy from "../../public/bg_server_copy.png";
 import config from "../config/global";
 import auth from "../firebase/firebase.config";
 import "./ServerCopyResult.css";
 
-const ServerCopyResult = ({ nidData, isChannelTwo = "0" }) => {
+const ServerCopyChannelTwoResult = ({ nidData, isChannelTwo = "0" }) => {
   const nidInformation = nidData || {};
+
+  console.log("serverCopyChannelTwo",nidInformation);
 
   const {
     nameBangla: name, // Renaming nameBangla to name
     nameEnglish: nameEn, // Renaming nameEnglish to nameEn
     spouseName: spouse,
     occupation, // Renaming spouseName to spouse
-    gender,
+    genderBangla:gender,
     bloodGroup,
     dateOfBirth,
     birthPlace,
@@ -28,10 +31,12 @@ const ServerCopyResult = ({ nidData, isChannelTwo = "0" }) => {
     pin,
     nationalId,
     religion,
-    voterNumber: voter_no, // Renaming voterNumber to voter_no
-    voterSlNo: sl_no, // Renaming voterSlNo to sl_no
+     voter_no, // Renaming voterNumber to voter_no
+     voter_sl_no: sl_no, // Renaming voterSlNo to sl_no
     voterAreaCode,
     photo,
+    presentAddress,
+    permanentAddress,
     permanentDivision: division, // Renaming permanentDivision to division
     permanentDistrict: district, // Renaming permanentDistrict to district
     permanentUpozila: upozila, // Renaming permanentUpozila to upozila
@@ -58,22 +63,22 @@ const ServerCopyResult = ({ nidData, isChannelTwo = "0" }) => {
     permanentVillageOrRoad,
     permanentMouzaOrMoholla,
     nidFather,
-    nidMother,
+    nidMother
   } = nidInformation;
 
   // Now you can create the fullAddress fields if needed
 
-  const permanentFullAddress = `${
-    homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
-  } 
-${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
-${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
-${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
-${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
-${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
-${upozila ? `উপজেলা: ${upozila},` : ""} 
-${district ? `জেলা: ${district},` : ""} 
-${division ? `বিভাগ: ${division}` : ""}`;
+//   const permanentFullAddress = `${
+//     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
+//   } 
+// ${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
+// ${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
+// ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
+// ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
+// ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
+// ${upozila ? `উপজেলা: ${upozila},` : ""} 
+// ${district ? `জেলা: ${district},` : ""} 
+// ${division ? `বিভাগ: ${division}` : ""}`;
 
   //   const permanentFullAddress = `${
   //     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
@@ -87,29 +92,29 @@ ${division ? `বিভাগ: ${division}` : ""}`;
   // ${district ? `জেলা: ${district},` : ""}
   // ${division ? `বিভাগ: ${division}` : ""}`;
 
-  const presentFullAddress = `${
-    presentHomeOrHoldingNo ? `বাসা/হোল্ডিং: ${presentHomeOrHoldingNo},` : ""
-  } 
-${
-  presentAdditionalVillageOrRoad
-    ? `গ্রাম/রাস্তা: ${presentAdditionalVillageOrRoad},`
-    : ""
-} 
-${
-  presentAdditionalMouzaOrMoholla
-    ? `মৌজা/মহল্লা: ${presentAdditionalMouzaOrMoholla},`
-    : ""
-} 
-${
-  presentUnionOrWard
-    ? `ইউনিয়ন/ওয়ার্ড: ${presentUnionOrWard}-${presentWardForUnionPorishod},`
-    : ""
-} 
-${presentPostOffice ? `পোস্ট অফিস: ${presentPostOffice},` : ""} 
-${presentPostalCode ? `পোস্ট কোড: ${presentPostalCode},` : ""} 
-${presentUpozila ? `উপজেলা: ${presentUpozila},` : ""} 
-${presentDistrict ? `জেলা: ${presentDistrict},` : ""} 
-${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
+//   const presentFullAddress = `${
+//     presentHomeOrHoldingNo ? `বাসা/হোল্ডিং: ${presentHomeOrHoldingNo},` : ""
+//   } 
+// ${
+//   presentAdditionalVillageOrRoad
+//     ? `গ্রাম/রাস্তা: ${presentAdditionalVillageOrRoad},`
+//     : ""
+// } 
+// ${
+//   presentAdditionalMouzaOrMoholla
+//     ? `মৌজা/মহল্লা: ${presentAdditionalMouzaOrMoholla},`
+//     : ""
+// } 
+// ${
+//   presentUnionOrWard
+//     ? `ইউনিয়ন/ওয়ার্ড: ${presentUnionOrWard}-${presentWardForUnionPorishod},`
+//     : ""
+// } 
+// ${presentPostOffice ? `পোস্ট অফিস: ${presentPostOffice},` : ""} 
+// ${presentPostalCode ? `পোস্ট কোড: ${presentPostalCode},` : ""} 
+// ${presentUpozila ? `উপজেলা: ${presentUpozila},` : ""} 
+// ${presentDistrict ? `জেলা: ${presentDistrict},` : ""} 
+// ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
 
   const [user] = useAuthState(auth);
 
@@ -301,23 +306,22 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
               color: "rgb(7, 7, 7)",
             }}
           >
-            {/* <b>জাতীয় পরিচিতি তথ্য</b> */}
+            <b>জাতীয় পরিচিতি তথ্য</b>
           </div>
           <div
             style={{
               position: "absolute",
               left: "37%",
               top: "30.0%",
-              // top: "30.0%",
               fontSize: "18px",
               color: "rgb(7, 7, 7)",
             }}
           >
-            <b>জাতীয় পরিচিতি তথ্য</b> 
+            জাতীয় পরিচয় পত্র নম্বর
           </div>
         </div>
 
-        {/* <div
+        <div
           id="nid_no"
           style={{
             position: "absolute",
@@ -328,7 +332,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
           }}
         >
           {nationalId}
-        </div> */}
+        </div>
 
         <div
           style={{
@@ -339,8 +343,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          জাতীয় পরিচয় পত্র নম্বর
-          {/* পিন নম্বর */}
+          পিন নম্বর
         </div>
 
         <div
@@ -354,8 +357,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {nationalId}
-          {/* {pin} */}
+          {pin}
         </div>
 
         <div
@@ -367,8 +369,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          পিন নম্বর
-          {/* {voter_no ? "ভোটার নম্বর" : "পিতার এনআইডি"} */}
+          {voter_no ? "ভোটার নম্বর" :"পিতার এনআইডি"}
         </div>
         <div
           id="nid_mother"
@@ -376,12 +377,11 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             position: "absolute",
             left: "55%",
             top: "35.4%",
-            fontSize: "16px",
+            fontSize: "18px",
             color: "rgb(7, 7, 7)",
           }}
         >
-          {pin}
-          {/* {voter_no || nidFather} */}
+          {voter_no || nidFather}
         </div>
         <div
           style={{
@@ -392,8 +392,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {/* {sl_no ? "সিরিয়াল নম্বর" : "মাতার এনআইডি"} */}
-          পুরাতন নম্বর
+          {sl_no? "সিরিয়াল নম্বর" :"মাতার এনআইডি"}
         </div>
         <div
           id="spouse"
@@ -405,8 +404,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {pin.slice(4)}
-          {/* {sl_no || nidMother} */}
+          {sl_no || nidMother}
         </div>
         <div
           style={{
@@ -418,8 +416,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
           }}
         >
           {/* ভোটার অঞ্চল */}
-          {/* জন্মস্থান */}
-          ভোটার এলাকা
+          জন্মস্থান
         </div>
         <div
           id="voter_area"
@@ -431,8 +428,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {presentAdditionalVillageOrRoad}
-          {/* {birthPlace || presentDistrict || district} */}
+          {birthPlace || presentDistrict || district}
         </div>
         <div
           style={{
@@ -629,8 +625,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          ধর্ম
-          {/* পেশা */}
+          পেশা
         </div>
         <div
           id="mobile_no"
@@ -642,35 +637,9 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {religion || "Islam"}
-          {/* {occupation} */}
+          {occupation}
         </div>
-
-        <div
-              style={{
-                position: "absolute",
-                left: "37%",
-                top: "70.9%",
-                fontSize: "18px",
-                color: "rgb(7, 7, 7)",
-              }}
-            >
-              রক্তের গ্রুপ
-            </div>
-            <div
-              id="blood_grp"
-              style={{
-                position: "absolute",
-                left: "55%",
-                top: "70.9%",
-                fontSize: "18px",
-                color: "red",
-              }}
-            >
-              {bloodGroup}
-            </div>
-
-        {/* {bloodGroup ? (
+        {bloodGroup ? (
           <>
             <div
               style={{
@@ -722,7 +691,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
               {voterAreaCode}
             </div>
           </>
-        )} */}
+        )}
         <div
           style={{
             position: "absolute",
@@ -732,8 +701,8 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          জন্মস্থান
-          {/* ধর্ম */}
+          {/* জন্মস্থান */}
+          ধর্ম
         </div>
         <div
           id="birth_place"
@@ -745,8 +714,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {birthPlace}
-          {/* {religion || "Islam"} */}
+          {religion || "Islam"}
         </div>
 
         <div
@@ -772,7 +740,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {nidData?.presentFullAddress || presentFullAddress}
+          {presentAddress?.addressLine}
         </div>
 
         <div
@@ -799,7 +767,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {nidData?.permanentFullAddress || permanentFullAddress}
+          {permanentAddress?.addressLine}
         </div>
 
         <div
@@ -833,7 +801,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
           style={{
             position: "absolute",
             left: "19%",
-            top: "28.7%",
+            top: "25.7%",
             width: "auto",
             fontSize: "12px",
             color: "rgb(3, 3, 3)",
@@ -855,8 +823,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             position: "absolute",
             // left: "21%",
             left: "20.2%",
-            top: "41.5%",
-            // top: "38.5%",
+            top: "38.5%",
             width: "auto",
             fontSize: "12px",
             color: "rgb(3, 3, 3)",
@@ -875,7 +842,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             position: "absolute",
             fontWeight: "bold",
             left: "17%",
-            top: "39.1%",
+            top: "36.1%",
             height: "32px",
             width: "161px",
             fontSize: "13px",
@@ -893,4 +860,4 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
   );
 };
 
-export default ServerCopyResult;
+export default ServerCopyChannelTwoResult;
