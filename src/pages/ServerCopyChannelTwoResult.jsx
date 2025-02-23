@@ -889,6 +889,11 @@ import "./ServerCopyResult.css";
 const ServerCopyChannelTwoResult = ({ nidData, isChannelTwo = "0" }) => {
   const nidInformation = nidData || {};
 
+  const voter_area = nidData?.presentAddress?.villageOrRoad 
+  ?? nidData?.presentAddress?.mouzaOrMoholla 
+  ?? nidData?.presentAddress?.unionOrWard 
+  ?? nidData?.presentAddress?.postOffice;
+
   const {
     nameBangla: name, // Renaming nameBangla to name
     nameEnglish: nameEn, // Renaming nameEnglish to nameEn
@@ -1308,7 +1313,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-          {nidData?.permanentAddress?.villageOrRoad}
+          {voter_area}
           {/* {birthPlace || presentDistrict || district} */}
         </div>
         <div
