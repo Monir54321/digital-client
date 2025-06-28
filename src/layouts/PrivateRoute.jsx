@@ -1,34 +1,24 @@
-import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import toast from 'react-hot-toast';
-import { Navigate, useLocation } from 'react-router-dom';
-import Loading from '../components/Loading';
-import auth from '../firebase/firebase.config';
+import { Navigate, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
+const PrivateRoute = ({ children }) => {
+  const location = useLocation();
 
+  // Check if token exists in localStorage
+  const token = localStorage.getItem("login_token");
+  const userStr = localStorage.getItem("user");
 
+  // If no token or user data, redirect to login
+  if (!token || !userStr) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
 
-const PrivateRoute = ({children}) => {
-    const [user, loading, error] = useAuthState(auth);
-    const location = useLocation();
+  // If token exists, render the children
+  return children;
+};
 
-
-    if(loading){
-        return <Loading/>
-    }
-    if(error){
-        toast.error(error.message)
-    }
-
-    if(user){
-        return children;
-    }
-
-    if(!user){
-        toast.error("Please sign in to see this feature.", {id: "notsignin"});
-    }
-    
-return <Navigate to="/" state={{from: location}} replace={true}></Navigate>
-}
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default PrivateRoute;

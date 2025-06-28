@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { Toaster } from "react-hot-toast";
 import {
   FaAddressCard,
@@ -15,30 +14,56 @@ import { FaFilePen } from "react-icons/fa6";
 import { IoMdCard } from "react-icons/io";
 import { MdAddLocationAlt } from "react-icons/md";
 import { PiFilesFill } from "react-icons/pi";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, Navigate } from "react-router-dom";
 import bikashIcon from "../assets/bikash_icon.png";
 import logo from "../assets/logo.png";
 import nogodIcon from "../assets/nogod_icon.png";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const DashboardLayout = () => {
-  const [user, loading] = useAuthState(auth);
+  const { user, loading: authLoading } = useLocalAuth();
   const [userData, setUserData] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${config.back_end_url}/users/${user?.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data?.data);
-      });
+    if (user?.email) {
+      const token = localStorage.getItem("login_token");
+      if (token) {
+        // Fetch user data from backend using the token
+        fetch(`${config.back_end_url}/users/${user.email}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setUserData(data?.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
   }, [user]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return <Loading />;
+  }
+
+  // If no token, redirect to login
+  const token = localStorage.getItem("login_token");
+  if (!token) {
+    return <Navigate to="/" replace />;
   }
 
   const handleLinkClick = () => {
@@ -133,12 +158,15 @@ const DashboardLayout = () => {
               </Link>
             </li>
             <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link to={"/dashboard/servercopy-channel-two"} onClick={handleLinkClick}>
+              <Link
+                to={"/dashboard/servercopy-channel-two"}
+                onClick={handleLinkClick}
+              >
                 <FaRegAddressCard width={16} height={16} />
                 সার্ভার কপি channel 2
               </Link>
             </li>
-            
+
             <li className="mt-2 w-full text-[15px] font-sans text-gray-500">
               <Link
                 to={"/dashboard/servercopytonidmake"}
@@ -151,7 +179,7 @@ const DashboardLayout = () => {
             <li className="mt-2 text-[15px] font-sans text-gray-500">
               <Link to={"/dashboard/biometric"} onClick={handleLinkClick}>
                 <FaFingerprint width={16} height={16} />
-                বায়োমেট্রিক
+                বায়োমেট্রিক
               </Link>
             </li>
             <li className="mt-2 text-[15px] font-sans text-gray-500">
@@ -166,30 +194,6 @@ const DashboardLayout = () => {
                 কল লিস্ট অল সিম
               </Link>
             </li>
-            {/* <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link to={"/dashboard/saftytika"} onClick={handleLinkClick}>
-                <GiSyringe width={16} height={16} />
-                সুরক্ষা টিকা
-              </Link>
-            </li> */}
-            {/* <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link
-                to={"/dashboard/birthcertificateonline"}
-                onClick={handleLinkClick}
-              >
-                <FaAddressCard width={16} height={16} />
-                জন্ম নিবন্ধন (Online)
-              </Link>
-            </li> */}
-            {/* <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link
-                to={"/dashboard/birthcertificateFix"}
-                onClick={handleLinkClick}
-              >
-                <FaUserEdit width={16} height={16} />
-                নিবন্ধন নাম কারেকশন
-              </Link>
-            </li> */}
             <li className="mt-2 text-[15px] font-sans text-gray-500">
               <Link to={"/dashboard/bikashinfo"} onClick={handleLinkClick}>
                 <img src={bikashIcon} className="w-5 h-5" />
@@ -202,12 +206,6 @@ const DashboardLayout = () => {
                 নগদ ইনফো
               </Link>
             </li>
-            {/* <li className="mt-2 text-[15px] font-sans text-gray-500">
-              <Link to={"/dashboard/bikashpinreset"} onClick={handleLinkClick}>
-                <MdLockReset width={16} height={16} />
-                বিকাশ পিন রিসেট
-              </Link>
-            </li> */}
             <li className="mt-2 text-[15px] font-sans text-gray-500">
               <Link to={"/dashboard/nameaddress"} onClick={handleLinkClick}>
                 <FaSearchengin width={16} height={16} />

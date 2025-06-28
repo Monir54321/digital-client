@@ -1,40 +1,58 @@
 import React, { useEffect } from "react";
-import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithGoogle,
-  useUpdateProfile,
-} from "react-firebase-hooks/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import auth from "../firebase/firebase.config";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
 import Loading from "../components/Loading";
-import config from "../config/global";
-import auth from "../firebase/firebase.config";
+import logo from "../assets/logo.png";
 
 const SignUp = () => {
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
-
-  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
   const navigate = useNavigate();
 
-  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-
   useEffect(() => {
-    if (user || gUser) {
+    if (gUser) {
       navigate("/dashboard");
     }
-  }, [user, gUser, navigate]);
+  }, [gUser, navigate]);
 
   useEffect(() => {
-    if (loading || gLoading) {
+    if (gLoading) {
       return <Loading />;
     }
   }, []);
 
   const handleGoogleLogin = () => {
     signInWithGoogle();
+  };
+
+  // Function to handle signup via custom backend
+  const handleCustomSignup = async (name, email, password) => {
+    console.log({ data: name, email, password });
+    try {
+      const response = await fetch("http://localhost:5000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          confirmPassword: password,
+        }),
+      });
+      const data = await response.json();
+      if (data.status === "Success") {
+        toast.success("Registered Successfully (Custom API)");
+        navigate("/dashboard");
+      } else {
+        toast.error(data.message || "Registration failed (Custom API)");
+      }
+    } catch (err) {
+      toast.error("Error connecting to server");
+    }
   };
 
   const handleSignUp = async (e) => {
@@ -51,23 +69,12 @@ const SignUp = () => {
     }
 
     if (email && password && name) {
-      fetch(`${config.back_end_url}/users/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, confirmPassword, name }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          if (data.status == "Success") {
-          }
-        });
-
-      await createUserWithEmailAndPassword(email, password);
-      toast.success("Registered Successfully");
-      await updateProfile({ displayName: name });
+      // Call custom signup function
+      await handleCustomSignup(name, email, password);
+      // Optionally, you can keep the Firebase signup as well, or comment it out if not needed
+      // await createUserWithEmailAndPassword(email, password);
+      // toast.success("Registered Successfully (Firebase)");
+      // await updateProfile({ displayName: name });
     }
   };
   return (
@@ -164,11 +171,9 @@ const SignUp = () => {
           </Link>
         </p>
 
-        <div className="w-full">
-          <button type="submit" className="btn w-full bg-blue-600 text-white btn-primary">
-            Register
-          </button>
-        </div>
+        <button type="submit" className="btn btn-primary text-white">
+          Register
+        </button>
         <div onClick={() => handleGoogleLogin()} className="btn w-full">
           <div className="flex items-center gap-2">
             <FcGoogle size={24} />

@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { MdOutlineFileCopy } from "react-icons/md";
 import Loading from "../components/Loading";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const BikashInfo = () => {
   const { data } = useManageOrderData();
   const statusData = data?.find((item) => item.title === "বিকাশ ইনফো");
-  const [user, loading] = useAuthState(auth);
+  const { user, loading } = useLocalAuth();
   const [myOrders, setMyOrders] = useState(null);
   const [reFetch, setReFetch] = useState(false);
 
@@ -25,15 +24,17 @@ const BikashInfo = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${config.back_end_url}/bikashInfoOrders/user/${user?.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "Success") {
-          setReFetch(false);
-          setMyOrders(data?.data);
-          console.log(data);
-        }
-      });
+    if (user?.email) {
+      fetch(`${config.back_end_url}/bikashInfoOrders/user/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "Success") {
+            setReFetch(false);
+            setMyOrders(data?.data);
+            console.log(data);
+          }
+        });
+    }
   }, [user, reFetch]);
 
   if (loading) {
@@ -55,27 +56,30 @@ const BikashInfo = () => {
     };
 
     try {
-      const token = await user.getIdToken();
-      if (price) {
+      const token = localStorage.getItem("login_token");
+      if (price && token) {
         const userData = await fetch(
           `${config.back_end_url}/users/${user.email}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include the token in headers
+              Authorization: `Bearer ${token}`,
             },
           }
         ).then((res) => res.json());
 
         if (userData?.data?.amount >= price) {
-          const rData = await fetch(`${config.back_end_url}/bikashInfoOrders/`, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include the token in headers
-            },
-            body: JSON.stringify(info),
-          }).then((res) => res.json());
+          const rData = await fetch(
+            `${config.back_end_url}/bikashInfoOrders/`,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(info),
+            }
+          ).then((res) => res.json());
 
           if (rData.status === "Success") {
             setReFetch(true);

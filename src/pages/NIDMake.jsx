@@ -1,16 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
 import writeImage from "../assets/Mack.png";
 import Loading from "../components/Loading";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import getBanglaDate from "../utils/bangladate";
 import useManageOrderData from "../utils/getManageOrder";
 import useGetPrice from "../utils/getPriceData";
 import useUserData from "../utils/getUserData";
+import useLocalAuth from "../utils/useLocalAuth";
 import validateInfo from "../utils/infoValidation";
 import { uploadFile } from "../utils/uploadFileFromFrontend";
 import NationalIDCard from "./NationalIDCard";
@@ -20,7 +19,7 @@ const NIDMake = () => {
   const statusData = data?.find((item) => item.title === "সাইন কপি টু এনআইডি");
   const [isRedirect, setIsRedirect] = useState(false);
   const [pdfUploadLoading, setPdfUploadLoading] = useState(false);
-  const [user, loading] = useAuthState(auth);
+  const { user, loading } = useLocalAuth();
 
   const { data: userData } = useUserData(user?.email);
 
@@ -56,9 +55,19 @@ const NIDMake = () => {
     dateOfBirth: "",
     bloodGroup: null,
     location: "",
-    email: user.email,
+    email: user?.email || "",
     applyDate: today,
   });
+
+  // Update info when user changes
+  useEffect(() => {
+    if (user?.email) {
+      setInfo((prevInfo) => ({
+        ...prevInfo,
+        email: user.email,
+      }));
+    }
+  }, [user]);
 
   const handleFileChange = async (event, fieldName) => {
     setImageLoading(true);
@@ -163,7 +172,6 @@ const NIDMake = () => {
     setInfo((prevState) => ({
       ...prevState,
       ...formData,
-      
     }));
     setIsRedirect(true);
     setIsLoading(false);
@@ -435,9 +443,11 @@ const NIDMake = () => {
         </label>
         <button
           className="btn w-full mt-4 btn-primary text-white flex justify-center items-center"
-          disabled={loading || isLoading || statusData?.status === "inactive"}
+          disabled={
+            priceLoading || isLoading || statusData?.status === "inactive"
+          }
         >
-          {loading || isLoading ? (
+          {priceLoading || isLoading ? (
             <>
               <span className="loading loading-spinner text-white bg-primary"></span>
             </>

@@ -1,26 +1,63 @@
-import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { FaBars, FaUserCircle } from "react-icons/fa";
-
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import Loading from "./Loading";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const Navbar = () => {
-  const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useLocalAuth();
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${config.back_end_url}/users/${user?.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data?.data);
-      });
+    if (user?.email) {
+      const token = localStorage.getItem("login_token");
+      console.log("Navbar - User email:", user.email);
+      console.log("Navbar - Token exists:", !!token);
+      console.log("Navbar - Backend URL:", config.back_end_url);
+
+      if (token) {
+        // Fetch user data from backend using the token
+        fetch(`${config.back_end_url}/users/${user.email}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => {
+            console.log("Navbar - Response status:", res.status);
+            return res.json();
+          })
+          .then((data) => {
+            console.log("Navbar - User data fetched:", data);
+            console.log("Navbar - User data.data:", data?.data);
+            console.log("Navbar - User data.data.amount:", data?.data?.amount);
+            setUserData(data?.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Navbar - Error fetching user data:", error);
+            setLoading(false);
+          });
+      } else {
+        console.log("Navbar - No token found");
+        setLoading(false);
+      }
+    } else {
+      console.log("Navbar - No user email found");
+      setLoading(false);
+    }
   }, [user]);
 
-  if (loading) {
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.removeItem("login_token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
+  if (authLoading || loading) {
     return <Loading />;
   }
 
@@ -34,7 +71,11 @@ const Navbar = () => {
 
       <div className="dropdown dropdown-left flex items-center gap-4 print:hidden">
         <p className="text-lg font-bold p-2 text-white bg-blue-500 rounded-lg">
-          {userData?.amount}
+          {(() => {
+            const balance = userData?.amount || 0;
+            console.log("Navbar - Displaying balance:", balance);
+            return balance;
+          })()}
         </p>
         <div tabIndex={0} role="button" className="avatar">
           <div className="w-12 h-12">
@@ -56,8 +97,8 @@ const Navbar = () => {
           <li>
             <a>Settings</a>
           </li>
-          <li onClick={() => signOut(auth)}>
-            <Link to={"/"}>Log Out</Link>
+          <li onClick={handleLogout}>
+            <a>Log Out</a>
           </li>
         </ul>
       </div>
