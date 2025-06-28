@@ -18,13 +18,16 @@ const LogIn = () => {
   // Function to handle login via custom backend
   const handleCustomLogin = async (email, password) => {
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://digital-server1.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
       console.log("✅ Full backend response:", data);

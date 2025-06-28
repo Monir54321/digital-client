@@ -31,18 +31,21 @@ const SignUp = () => {
   const handleCustomSignup = async (name, email, password) => {
     console.log({ data: name, email, password });
     try {
-      const response = await fetch("http://localhost:5000/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          confirmPassword: password,
-        }),
-      });
+      const response = await fetch(
+        "https://digital-server1.onrender.com/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            confirmPassword: password,
+          }),
+        }
+      );
       const data = await response.json();
       if (data.status === "Success") {
         toast.success("Registered Successfully (Custom API)");
