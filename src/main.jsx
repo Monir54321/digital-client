@@ -12,7 +12,6 @@ import BikashPinReset from "./pages/BikashPinReset.jsx";
 import Biometric from "./pages/Biometric.jsx";
 import BirthCertificateFix from "./pages/BirthCertificateFix.jsx";
 import BirthCertificateOnline from "./pages/BirthCertificateOnline.jsx";
-import BkashError from "./pages/BkashError.jsx";
 import BkashSuccess from "./pages/BkashSuccess.jsx";
 import CallListAllSim from "./pages/CallListAllSim.jsx";
 import FileList from "./pages/FileList.jsx";
@@ -45,10 +44,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <LogIn />,
       },
-      {
-        path: "/error",
-        element: <BkashError />,
-      },
+
       {
         path: "/success",
         element: <BkashSuccess />,
