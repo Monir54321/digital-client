@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
 import useUserData from "../utils/getUserData";
 import ServerCopyResult from "./ServerCopyResult";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const ServerCopy = () => {
-  const { user, loading: authLoading } = useLocalAuth();
+  const { user } = useLocalAuth();
   const { data } = useManageOrderData();
   const { data: userData } = useUserData(user?.email);
   const statusData = data?.find((item) => item.title === "সার্ভার কপি");

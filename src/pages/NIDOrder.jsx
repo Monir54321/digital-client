@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import MyOrdersUi from "../components/MyOrdersUi/MyOrdersUi";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const NIDOrder = () => {
-  const [user, loading] = useAuthState(auth);
+  const { user, loading: authLoading } = useLocalAuth();
   const [myOrders, setMyOrders] = useState(null);
   const [reFetch, setReFetch] = useState(false);
   const { data } = useManageOrderData();
@@ -81,7 +80,7 @@ const NIDOrder = () => {
       });
   };
 
-  if (loading) {
+  if (authLoading) {
     return <Loading />;
   }
 
@@ -136,9 +135,9 @@ const NIDOrder = () => {
 
         <button
           className="btn w-full  mt-4 btn-primary text-white"
-          disabled={loading || statusData?.status === "inactive"}
+          disabled={authLoading || statusData?.status === "inactive"}
         >
-          {loading ? (
+          {authLoading ? (
             <>
               <span className="loading loading-spinner text-white bg-primary"></span>
             </>

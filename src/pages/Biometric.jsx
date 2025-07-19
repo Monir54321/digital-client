@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { MdOutlineFileCopy } from "react-icons/md";
 import Loading from "../components/Loading";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const Biometric = () => {
   const { data } = useManageOrderData();
   const statusData = data?.find((item) => item.title === "Biometric");
-  const [user, loading] = useAuthState(auth);
+const { user, loading: authLoading } = useLocalAuth();
   const [myOrders, setMyOrders] = useState(null);
   const [reFetch, setReFetch] = useState(false);
   const [bioPrice, setBioPrice] = useState(null);
@@ -90,7 +89,7 @@ const Biometric = () => {
       });
   };
 
-  if (loading) {
+  if (authLoading) {
     return <Loading />;
   }
   return (
@@ -155,9 +154,9 @@ const Biometric = () => {
 
         <button
           className="btn w-full mt-4 btn-primary text-white flex justify-center items-center"
-          disabled={loading || statusData?.status === "inactive"}
+          disabled={authLoading || statusData?.status === "inactive"}
         >
-          {loading ? (
+          {authLoading ? (
             <>
               <span className="loading loading-spinner text-white bg-primary"></span>
             </>
