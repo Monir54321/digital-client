@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import SyncLoader from "react-spinners/SyncLoader";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import getBanglaDate from "../utils/bangladate";
 import checkAndConvertPostalCode from "../utils/convertIntoBanglaDigit";
 import useManageOrderData from "../utils/getManageOrder";
@@ -11,9 +9,10 @@ import useUserData from "../utils/getUserData";
 import validateInfo from "../utils/infoValidation";
 import { uploadFile } from "../utils/uploadFileFromFrontend";
 import NationalIDCard from "./NationalIDCard";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const ServerCopyToNID = () => {
-  const [user] = useAuthState(auth);
+  const { user } = useLocalAuth();
   const [loading, setLoading] = useState(false);
   const [signatureImg, setSignatureImg] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
@@ -47,7 +46,7 @@ const ServerCopyToNID = () => {
     dateOfBirth: "",
     bloodGroup: null,
     location: "",
-    email: user.email,
+    email: user?.email,
     applyDate: today,
   });
 

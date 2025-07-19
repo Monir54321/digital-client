@@ -9,7 +9,7 @@ import useUserData from "../utils/getUserData";
 import ServerCopyResult from "./ServerCopyResult";
 
 const ServerCopy = () => {
-  const [user] = useAuthState(auth);
+  const { user, loading: authLoading } = useLocalAuth();
   const { data } = useManageOrderData();
   const { data: userData } = useUserData(user?.email);
   const statusData = data?.find((item) => item.title === "সার্ভার কপি");

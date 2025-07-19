@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import  { useEffect, useState } from "react";
+
 import toast from "react-hot-toast";
 import { MdDelete, MdDownload } from "react-icons/md";
 import Loading from "../components/Loading";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const BikashPinReset = () => {
   const { data } = useManageOrderData();
   const statusData = data?.find((item) => item.title === "বিকাশ পিন রিসেট");
-  const [user, loading, error] = useAuthState(auth);
+ const { user, loading: authLoading } = useLocalAuth();
   const [myOrders, setMyOrders] = useState(null);
   const [reFetch, setReFetch] = useState(false);
 
-  if (loading) {
-    return <Loading />;
-  }
+  
 
   useEffect(() => {
     fetch(`${config.back_end_url}/bikashPinResets/user/${user?.email}`)
@@ -29,6 +27,10 @@ const BikashPinReset = () => {
         }
       });
   }, [user, reFetch]);
+
+  if (authLoading) {
+    return <Loading />;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -117,9 +119,9 @@ const BikashPinReset = () => {
 
         <button
           className="btn w-full mt-4 btn-primary text-white"
-          disabled={loading || statusData?.status === "inactive"}
+          disabled={authLoading || statusData?.status === "inactive"}
         >
-          {loading ? (
+          {authLoading ? (
             <>
               <span className="loading loading-spinner text-white bg-primary"></span>
             </>

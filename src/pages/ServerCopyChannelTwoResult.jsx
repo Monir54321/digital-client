@@ -70,14 +70,14 @@
 
 // //   const permanentFullAddress = `${
 // //     homeOrHoldingNo ? `বাসা/হোল্ডিং: ${homeOrHoldingNo},` : ""
-// //   } 
-// // ${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""} 
-// // ${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""} 
-// // ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""} 
-// // ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""} 
-// // ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""} 
-// // ${upozila ? `উপজেলা: ${upozila},` : ""} 
-// // ${district ? `জেলা: ${district},` : ""} 
+// //   }
+// // ${additionalVillageOrRoad ? `গ্রাম/রাস্তা: ${additionalVillageOrRoad},` : ""}
+// // ${additionalMouzaOrMoholla ? `মৌজা/মহল্লা: ${additionalMouzaOrMoholla},` : ""}
+// // ${unionOrWard ? `ইউনিয়ন/ওয়ার্ড: ${unionOrWard},` : ""}
+// // ${postOffice ? `পোস্ট অফিস: ${postOffice},` : ""}
+// // ${postalCode ? `পোস্ট কোড: ${postalCode},` : ""}
+// // ${upozila ? `উপজেলা: ${upozila},` : ""}
+// // ${district ? `জেলা: ${district},` : ""}
 // // ${division ? `বিভাগ: ${division}` : ""}`;
 
 //   //   const permanentFullAddress = `${
@@ -94,29 +94,29 @@
 
 // //   const presentFullAddress = `${
 // //     presentHomeOrHoldingNo ? `বাসা/হোল্ডিং: ${presentHomeOrHoldingNo},` : ""
-// //   } 
+// //   }
 // // ${
 // //   presentAdditionalVillageOrRoad
 // //     ? `গ্রাম/রাস্তা: ${presentAdditionalVillageOrRoad},`
 // //     : ""
-// // } 
+// // }
 // // ${
 // //   presentAdditionalMouzaOrMoholla
 // //     ? `মৌজা/মহল্লা: ${presentAdditionalMouzaOrMoholla},`
 // //     : ""
-// // } 
+// // }
 // // ${
 // //   presentUnionOrWard
 // //     ? `ইউনিয়ন/ওয়ার্ড: ${presentUnionOrWard}-${presentWardForUnionPorishod},`
 // //     : ""
-// // } 
-// // ${presentPostOffice ? `পোস্ট অফিস: ${presentPostOffice},` : ""} 
-// // ${presentPostalCode ? `পোস্ট কোড: ${presentPostalCode},` : ""} 
-// // ${presentUpozila ? `উপজেলা: ${presentUpozila},` : ""} 
-// // ${presentDistrict ? `জেলা: ${presentDistrict},` : ""} 
+// // }
+// // ${presentPostOffice ? `পোস্ট অফিস: ${presentPostOffice},` : ""}
+// // ${presentPostalCode ? `পোস্ট কোড: ${presentPostalCode},` : ""}
+// // ${presentUpozila ? `উপজেলা: ${presentUpozila},` : ""}
+// // ${presentDistrict ? `জেলা: ${presentDistrict},` : ""}
 // // ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
 
-//   const [user] = useAuthState(auth);
+//   const { user, loading: authLoading } = useLocalAuth();
 
 //   const [price, setPrice] = useState(0);
 
@@ -862,17 +862,6 @@
 
 // export default ServerCopyChannelTwoResult;
 
-
-
-
-
-
-
-
-
-
-
-
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
@@ -885,14 +874,16 @@ import bg_server_copy from "../../public/bg_server_copy.png";
 import config from "../config/global";
 import auth from "../firebase/firebase.config";
 import "./ServerCopyResult.css";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const ServerCopyChannelTwoResult = ({ nidData, isChannelTwo = "0" }) => {
   const nidInformation = nidData || {};
 
-  const voter_area = nidData?.presentAddress?.villageOrRoad 
-  ?? nidData?.presentAddress?.mouzaOrMoholla 
-  ?? nidData?.presentAddress?.unionOrWard 
-  ?? nidData?.presentAddress?.postOffice;
+  const voter_area =
+    nidData?.presentAddress?.villageOrRoad ??
+    nidData?.presentAddress?.mouzaOrMoholla ??
+    nidData?.presentAddress?.unionOrWard ??
+    nidData?.presentAddress?.postOffice;
 
   const {
     nameBangla: name, // Renaming nameBangla to name
@@ -993,7 +984,7 @@ ${presentUpozila ? `উপজেলা: ${presentUpozila},` : ""}
 ${presentDistrict ? `জেলা: ${presentDistrict},` : ""} 
 ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
 
-  const [user] = useAuthState(auth);
+  const { user, loading: authLoading } = useLocalAuth();
 
   const [price, setPrice] = useState(0);
 
@@ -1195,7 +1186,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
               color: "rgb(7, 7, 7)",
             }}
           >
-            <b>জাতীয় পরিচিতি তথ্য</b> 
+            <b>জাতীয় পরিচিতি তথ্য</b>
           </div>
         </div>
 
@@ -1236,7 +1227,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {nationalId}
+          {nationalId}
           {/* {pin} */}
         </div>
 
@@ -1287,7 +1278,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {pin.slice(4)}
+          {pin.slice(4)}
           {/* {sl_no || nidMother} */}
         </div>
         <div
@@ -1524,33 +1515,33 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {religion || "Islam"}
+          {religion || "Islam"}
           {/* {occupation} */}
         </div>
 
         <div
-              style={{
-                position: "absolute",
-                left: "37%",
-                top: "70.9%",
-                fontSize: "18px",
-                color: "rgb(7, 7, 7)",
-              }}
-            >
-              রক্তের গ্রুপ
-            </div>
-            <div
-              id="blood_grp"
-              style={{
-                position: "absolute",
-                left: "55%",
-                top: "70.9%",
-                fontSize: "18px",
-                color: "red",
-              }}
-            >
-              {bloodGroup}
-            </div>
+          style={{
+            position: "absolute",
+            left: "37%",
+            top: "70.9%",
+            fontSize: "18px",
+            color: "rgb(7, 7, 7)",
+          }}
+        >
+          রক্তের গ্রুপ
+        </div>
+        <div
+          id="blood_grp"
+          style={{
+            position: "absolute",
+            left: "55%",
+            top: "70.9%",
+            fontSize: "18px",
+            color: "red",
+          }}
+        >
+          {bloodGroup}
+        </div>
 
         {/* {bloodGroup ? (
           <>
@@ -1776,4 +1767,3 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
 };
 
 export default ServerCopyChannelTwoResult;
-

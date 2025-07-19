@@ -31,7 +31,7 @@ const BikashInfo = () => {
           if (data.status === "Success") {
             setReFetch(false);
             setMyOrders(data?.data);
-            console.log(data);
+          
           }
         });
     }
@@ -85,18 +85,18 @@ const BikashInfo = () => {
             setReFetch(true);
             toast.success(rData.message);
 
-            console.log(rData);
+        
             form.reset(); // Reset form after submission
           } else {
             toast.error(rData.message);
-            console.log(rData);
+           
           }
         } else {
           toast.error("Please recharge to proceed this order");
         }
       }
     } catch (error) {
-      console.error("Error during submission:", error);
+   
       toast.error("Failed to send your request");
     }
   };

@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import config from "../config/global";
-import auth from "../firebase/firebase.config";
 import useManageOrderData from "../utils/getManageOrder";
 import useUserData from "../utils/getUserData";
 import ServerCopyChannelTwoResult from "./ServerCopyChannelTwoResult";
+import useLocalAuth from "../utils/useLocalAuth";
 
 const ServerCopyChannelTwo = () => {
-  const [user] = useAuthState(auth);
+  const { user } = useLocalAuth();
   const { data } = useManageOrderData();
   const { data: userData } = useUserData(user?.email);
   const statusData = data?.find(
@@ -57,10 +56,10 @@ const ServerCopyChannelTwo = () => {
           },
         }
       );
-      console.log("server copy channel two",response)
+      console.log("server copy channel two", response);
       const data = await response.json();
 
-      console.log("channelTwo reponse data",data)
+      console.log("channelTwo reponse data", data);
 
       if (
         data?.message === "সার্ভারে খুঁজে পাওয়া যায়নি" ||

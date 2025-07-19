@@ -111,7 +111,7 @@ ${presentUpozila ? `উপজেলা: ${presentUpozila},` : ""}
 ${presentDistrict ? `জেলা: ${presentDistrict},` : ""} 
 ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
 
-  const [user] = useAuthState(auth);
+  const { user, loading: authLoading } = useLocalAuth();
 
   const [price, setPrice] = useState(0);
 
@@ -313,7 +313,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
               color: "rgb(7, 7, 7)",
             }}
           >
-            <b>জাতীয় পরিচিতি তথ্য</b> 
+            <b>জাতীয় পরিচিতি তথ্য</b>
           </div>
         </div>
 
@@ -354,7 +354,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {nationalId}
+          {nationalId}
           {/* {pin} */}
         </div>
 
@@ -405,7 +405,7 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {pin.slice(4)}
+          {pin.slice(4)}
           {/* {sl_no || nidMother} */}
         </div>
         <div
@@ -642,33 +642,33 @@ ${presentDivision ? `বিভাগ: ${presentDivision}` : ""}`;
             color: "rgb(7, 7, 7)",
           }}
         >
-           {religion || "Islam"}
+          {religion || "Islam"}
           {/* {occupation} */}
         </div>
 
         <div
-              style={{
-                position: "absolute",
-                left: "37%",
-                top: "70.9%",
-                fontSize: "18px",
-                color: "rgb(7, 7, 7)",
-              }}
-            >
-              রক্তের গ্রুপ
-            </div>
-            <div
-              id="blood_grp"
-              style={{
-                position: "absolute",
-                left: "55%",
-                top: "70.9%",
-                fontSize: "18px",
-                color: "red",
-              }}
-            >
-              {bloodGroup}
-            </div>
+          style={{
+            position: "absolute",
+            left: "37%",
+            top: "70.9%",
+            fontSize: "18px",
+            color: "rgb(7, 7, 7)",
+          }}
+        >
+          রক্তের গ্রুপ
+        </div>
+        <div
+          id="blood_grp"
+          style={{
+            position: "absolute",
+            left: "55%",
+            top: "70.9%",
+            fontSize: "18px",
+            color: "red",
+          }}
+        >
+          {bloodGroup}
+        </div>
 
         {/* {bloodGroup ? (
           <>

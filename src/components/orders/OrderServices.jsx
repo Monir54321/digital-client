@@ -47,7 +47,7 @@ const OrderServices = ({ prop }) => {
       fetch(`${config.back_end_url}/${prop}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          
           if (data?.status == "Success") {
             setRefetch(false);
             const pendingOrdersData = data?.data?.filter(
@@ -62,9 +62,7 @@ const OrderServices = ({ prop }) => {
             setPendingOrders(pendingOrdersData);
             setProcessingOrders(processingOrdersData);
             setSuccessOrders(successOrdersData);
-            console.log({ pendingOrdersData });
-            console.log({ processingOrdersData });
-            console.log({ successOrdersData });
+            
             //console.log(data);
           }
         });
@@ -86,7 +84,7 @@ const OrderServices = ({ prop }) => {
           if (data.status == "Success") {
             setRefetch(true);
             toast.success("Successfully accepted order");
-            console.log(data);
+          
           }
         });
     } else {
@@ -163,7 +161,7 @@ const OrderServices = ({ prop }) => {
                 if (data.status === "Success") {
                   setRefetch(true);
                   toast.success("Successfully canceled the order");
-                  console.log("Server response:", data);
+                
                 } else {
                   toast.error("Failed to cancel the order");
                   console.error("Error:", data);

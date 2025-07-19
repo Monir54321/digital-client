@@ -14,9 +14,7 @@ const Navbar = () => {
   useEffect(() => {
     if (user?.email) {
       const token = localStorage.getItem("login_token");
-      console.log("Navbar - User email:", user.email);
-      console.log("Navbar - Token exists:", !!token);
-      console.log("Navbar - Backend URL:", config.back_end_url);
+     
 
       if (token) {
         // Fetch user data from backend using the token
@@ -26,13 +24,11 @@ const Navbar = () => {
           },
         })
           .then((res) => {
-            console.log("Navbar - Response status:", res.status);
+        
             return res.json();
           })
           .then((data) => {
-            console.log("Navbar - User data fetched:", data);
-            console.log("Navbar - User data.data:", data?.data);
-            console.log("Navbar - User data.data.amount:", data?.data?.amount);
+           
             setUserData(data?.data);
             setLoading(false);
           })
@@ -41,11 +37,11 @@ const Navbar = () => {
             setLoading(false);
           });
       } else {
-        console.log("Navbar - No token found");
+      
         setLoading(false);
       }
     } else {
-      console.log("Navbar - No user email found");
+     
       setLoading(false);
     }
   }, [user]);
@@ -73,7 +69,7 @@ const Navbar = () => {
         <p className="text-lg font-bold p-2 text-white bg-blue-500 rounded-lg">
           {(() => {
             const balance = userData?.amount || 0;
-            console.log("Navbar - Displaying balance:", balance);
+           
             return balance;
           })()}
         </p>
