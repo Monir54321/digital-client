@@ -514,7 +514,7 @@ const NationalIDCard = ({ info, invokeApiTitle }) => {
                             <img
                               className="w-[78px] ml-[18px] -mb-[3px] scale-125"
                               style={{ marginBottom: "3px" }}
-                              src="https://res.cloudinary.com/dr8smmidd/image/upload/v1737965497/Untitled-1_copy_w53a6t.png"
+                              src="https://i.ibb.co/ks5Q1jVy/sign-july.jpg"
                               // src="https://i.ibb.co.com/M1ZyprG/sign.png"
                               alt="Signature"
                             />
